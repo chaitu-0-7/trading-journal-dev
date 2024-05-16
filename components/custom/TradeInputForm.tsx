@@ -383,7 +383,9 @@ export function TradeInputForm({
             <div className="w-full md:w-1/2 lg:w-1/2">
               <label className="text-sm font-medium mb-1">Type of Trade</label>
               <Select
-                className="w-full"
+                // className="w-full bg-white dark:bg-neutral-700 border-2 border-neutral-300 dark:border-neutral-700 hover:border-neutral-400 dark:hover:border-neutral-500"
+                className="my-react-select-container"
+                classNamePrefix="my-react-select"
                 defaultValue={tradeTypeOptions.find(
                   (option) => option.value === formData.type
                 )}
@@ -399,12 +401,16 @@ export function TradeInputForm({
               />
             </div>
 
+            
+
             <div className="w-full md:w-1/2">
               <label className="text-sm font-medium mb-1">
                 Good or Bad Trade
               </label>
               <Select
-                className="w-full"
+                // className="w-full"
+                className="my-react-select-container"
+                classNamePrefix="my-react-select"
                 options={goodBadOptions}
                 defaultValue={goodBadOptions.find(
                   (option) => option.value === formData.goodBadTrade
@@ -433,7 +439,9 @@ export function TradeInputForm({
             <div className="w-full md:w-1/2">
               <label className="text-sm font-medium mb-1">Exit Reason</label>
               <Select
-                className="w-full"
+                // className="w-full"
+                className="my-react-select-container"
+                classNamePrefix="my-react-select"
                 options={exitReasonOptions}
                 defaultValue={exitReasonOptions.find(
                   (option) => option.value === formData.exitReason

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-
+import Providers from "../components/themes/providers";
+import { ThemeSwitcher } from "@/components/themes/ThemeSwitcher";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -16,7 +17,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body>
+        <Providers>
+          <ThemeSwitcher/>
+          {children}
+        </Providers>
+      </body>
     </html>
   );
 }
