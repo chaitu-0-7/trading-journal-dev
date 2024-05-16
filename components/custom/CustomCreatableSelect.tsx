@@ -28,7 +28,8 @@ export default function CustomCreateSelect({ options, onCreateFunction, selectNa
   return (
     <div>
       <CreatableSelect
-        className={classNameMultiSelect}
+        className={`${classNameMultiSelect} my-react-select-container`}
+        classNamePrefix="my-react-select"
         isClearable
         required
         options={optionsForSearch}

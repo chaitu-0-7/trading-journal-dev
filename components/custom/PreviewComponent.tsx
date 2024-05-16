@@ -59,7 +59,7 @@ export default function PreviewComponent({inputData}:{inputData:inputData}) {
   } else if (label === "Loss") {
     bgColor = "text-slate-50 bg-red-600 rounded-md shadow-md";
   } else {
-    bgColor = "text-black"; // Default background color
+    bgColor = "text-gray-900 dark:text-slate-50"; // Default background color
   }
 
   return (
@@ -68,14 +68,12 @@ export default function PreviewComponent({inputData}:{inputData:inputData}) {
     >
       {`${label}: ${value}`}
     </p>
-
-
     );
   };
 
   const { profitLoss, risk, reward, riskRewardRatio } = calculateProfitLoss(inputData);
   const conditionalClasses = "";
-  const classNameElements = "h-52 w-52 bg-white shadow-md rounded-lg p-4 flex flex-col justify-between m-2";
+  const classNameElements = "h-52 w-52 bg-white shadow-md rounded-lg p-4 flex flex-col justify-between m-2 dark:bg-gray-900";
   const dateObject = new Date(inputData.date)
 
   return (
@@ -113,27 +111,24 @@ export default function PreviewComponent({inputData}:{inputData:inputData}) {
       </div>
       <div className={classNameElements}>
         <div className="grid grid-cols-2 gap-2">
-          <div className="bg-orange-200 shadow-md rounded-md flex flex-col justify-center items-center h-20 w-20">
-            <p className="text-sm font-medium mb-2">Entry</p>
-            <p className="text-sm font-bold">{inputData.averageEntryPrice}</p>
-          </div>
-          <div className="bg-blue-200 shadow-md rounded-md flex flex-col justify-center items-center h-20 w-20">
-            <p className="text-sm font-medium mb-2">Exit</p>
-            <p className="text-sm font-bold">{inputData.averageExitPrice}</p>
-          </div>
-          <div className="bg-red-400 shadow-md rounded-md flex flex-col justify-center items-center h-20 w-20">
-            <p className="text-sm font-medium mb-2">Stoploss</p>
-            <p className="text-sm font-bold">{inputData.stopLossPrice}</p>
-          </div>
-          <div className="bg-green-200 shadow-md rounded-md flex flex-col justify-center items-center h-20 w-20">
-            <p className="text-sm font-medium mb-2">Target</p>
-            <p className="text-sm font-bold">{inputData.targetPrice}</p>
-          </div>
+        <div className="bg-orange-200 shadow-md rounded-md flex flex-col justify-center items-center h-20 w-20 dark:bg-orange-500"> <p className="text-sm font-medium mb-2">Entry</p>
+  <p className="text-sm font-bold">{inputData.averageEntryPrice}</p>
+</div>
+<div className="bg-blue-200 shadow-md rounded-md flex flex-col justify-center items-center h-20 w-20 dark:bg-blue-500"> <p className="text-sm font-medium mb-2">Exit</p>
+  <p className="text-sm font-bold">{inputData.averageExitPrice}</p>
+</div>
+<div className="bg-red-400 shadow-md rounded-md flex flex-col justify-center items-center h-20 w-20 dark:bg-red-600"> <p className="text-sm font-medium mb-2">Stoploss</p>
+  <p className="text-sm font-bold">{inputData.stopLossPrice}</p>
+</div>
+<div className="bg-green-200 shadow-md rounded-md flex flex-col justify-center items-center h-20 w-20 dark:bg-green-600"> <p className="text-sm font-medium mb-2">Target</p>
+  <p className="text-sm font-bold">{inputData.targetPrice}</p>
+</div>
+
         </div>
       </div>
       <div className={classNameElements}>
         <div className={`${conditionalClasses} rounded-lg p-2 flex flex-col justify-center items-center h-full w-full`}>
-          {profitLoss === "NaN" ? <p className={`bg-sky-200 rounded-md shadow-md font-medium text-sm m-0 flex flex-col justify-center items-center h-full w-full`}>{`Trade Open`}</p>
+          {profitLoss === "NaN" ? <p className={`bg-sky-200 dark:bg-sky-500 rounded-md shadow-md font-medium text-sm m-0 flex flex-col justify-center items-center h-full w-full`}>{`Trade Open`}</p>
           :renderValue(Number(profitLoss), Number(profitLoss) > 0 ? 'Profit' : 'Loss')}
           {/* {renderValue(Number(profitLoss), Number(profitLoss) > 0 ? 'Profit' : 'Loss')} */}
           {renderValue(Number(risk), 'Risk')}
