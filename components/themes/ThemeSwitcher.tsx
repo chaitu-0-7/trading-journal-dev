@@ -22,8 +22,8 @@ export function ThemeSwitcher() {
 
   return (
     <div className="theme-switcher"> {/* Add a class for styling */}
-      <button onClick={toggleTheme} aria-label="Toggle theme" className="m-4 flex justify-end">
-        {theme === "light" ? <Moon size={32} strokeWidth={1.5} /> : <Sun size={32} strokeWidth={1.5} />}
+      <button onClick={toggleTheme} aria-label="Toggle theme" className="flex">
+        {theme === "light" ? <><Moon size={24} className="m-2"/><span> Dark Theme</span></> : <><Sun size={24} className="m-2"/><span> Light Theme</span></>}
       </button>
     </div>
   );

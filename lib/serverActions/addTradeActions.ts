@@ -1,4 +1,5 @@
 "use server";
+import { auth } from "@/app/auth";
 import connectDB from "@/db/connect";
 import { Instruments, Setups, Trade } from "@/db/models";
 
@@ -112,6 +113,8 @@ export async function addTradeSetup(setup: string) {
 export async function addTrade(data: inputData) {
   // console.log(props)
   // const data = props.data
+  const session = await auth()
+  const user = session?.user
   try {
     console.log(data);
     let status = "closed";
@@ -143,7 +146,7 @@ export async function addTrade(data: inputData) {
       longShort: data.type,
       profitLoss: status === "closed" ? profitLoss : null,
       net,
-      user: "test", // Replace with actual user logic
+      user: user?.id, // Replace with actual user logic
       tradeDate: data.date, // Assuming date is in a parseable format
       instrument: data.instrument,
       setup: data.setup,

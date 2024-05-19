@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Providers from "../components/themes/providers";
 import { ThemeSwitcher } from "@/components/themes/ThemeSwitcher";
+import NavBar from "@/components/custom/NavBar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -19,7 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Providers>
-          <ThemeSwitcher/>
+          <NavBar/>
           {children}
         </Providers>
       </body>
