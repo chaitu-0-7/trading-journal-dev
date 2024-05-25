@@ -25,13 +25,6 @@ export default function UserButton({ user }: UserButtonProps) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button size="icon" className="flex-none rounded-full">
-          {/* <Image
-            src={userIcon}
-            alt="User profile picture"
-            width={50}
-            height={50}
-            className="aspect-square rounded-full bg-background object-cover border border-blue-500"
-          /> */}
           <User2Icon/>
         </Button>
       </DropdownMenuTrigger>
@@ -40,9 +33,9 @@ export default function UserButton({ user }: UserButtonProps) {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
-            <Link href="/settings">
+            <Link href="/settings" className="flex items-center px-4 py-2 w-full focus:outline-none hover:bg-gray-100 dark:hover:bg-gray-700">
               <Settings className="mr-2" />
-              <span>Settings</span>
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-200">Settings</span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
@@ -50,14 +43,14 @@ export default function UserButton({ user }: UserButtonProps) {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
+        <DropdownMenuItem asChild className="flex items-center px-4 py-2 w-full focus:outline-none hover:bg-gray-100 dark:hover:bg-gray-700">
           <form
             action={async () => {
               "use server";
               await signOut();
             }}
           >
-            <button type="submit" className="flex w-full items-center">
+            <button type="submit" className="flex w-full items-center text-sm font-medium text-gray-700 dark:text-gray-200">
               <LogOut className="mr-2" /> Sign Out
             </button>
           </form>

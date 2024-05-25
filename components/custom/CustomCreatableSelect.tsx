@@ -32,6 +32,9 @@ export default function CustomCreateSelect({ options, onCreateFunction, selectNa
         classNamePrefix="my-react-select"
         isClearable
         required
+        defaultValue={optionsForSearch.find(
+          (option) => option.value === defaultInput
+        )}
         options={optionsForSearch}
         onCreateOption={onCreateFunction}
         name={selectName}

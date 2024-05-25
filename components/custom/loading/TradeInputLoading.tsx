@@ -1,7 +1,7 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
 const PreviewSkeleton = () => {
-    const classNameElements = "h-52 w-52 bg-white shadow-md rounded-lg p-4 flex flex-col justify-between m-2";
+    const classNameElements = "h-52 w-52 shadow-md rounded-lg p-4 flex flex-col justify-between m-2";
     return (
       <div className="grid lg:grid-cols-3 grid-cols-1 justify-items-center gap-4 ">
         <div className={classNameElements}>
@@ -63,7 +63,7 @@ export const SkeletonForm = () => {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="flex justify-center">
-          <form className="shadow-sm rounded-md border border-gray-200 p-6 md:w-3/4 lg:w-3/5 mx-auto">
+          <form className="shadow-sm rounded-md border p-6 md:w-3/4 lg:w-3/5 mx-auto">
             <fieldset className="space-y-4">
               <legend className="text-xl font-bold mb-4">
                 Trade Details

@@ -140,7 +140,6 @@ export function TradeInputForm({
   const handleFormUpdate = () => {
     //Function to call updatePreview and validateInput so that non null is done simultaneously
     var allFieldsEntered: boolean = true;
-    console.log(formData);
     Object.entries(formData).forEach(([key, value]) => {
       if (
         key != "averageExitPrice" &&
@@ -151,7 +150,7 @@ export function TradeInputForm({
         allFieldsEntered = false;
       }
     });
-    if(formData.averageExitPrice!= "" && formData.exitReason === ""){
+    if(!(formData.averageExitPrice === "" || formData.averageExitPrice === null || formData.averageExitPrice === undefined) && formData.exitReason === ""){
       allFieldsEntered = false
       setErrors((prevErrors) => ({
         ...prevErrors,
@@ -289,7 +288,7 @@ export function TradeInputForm({
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     validateInput();
-    if (formData.averageExitPrice.trim() === "") {
+    if ((formData.averageExitPrice === null || formData.averageExitPrice.trim() === "")) {
       setFormData((prevData: any) => ({
         ...prevData,
         setup: "open",
@@ -453,7 +452,6 @@ export function TradeInputForm({
                   }))
                 }
                 placeholder="Select"
-                required
               />
               {errors.exitReason != "" && (
                 <div className="text-xs text-red-500 mt-1">

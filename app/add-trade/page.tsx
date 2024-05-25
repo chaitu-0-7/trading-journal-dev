@@ -1,11 +1,20 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 import { useState, useEffect } from "react";
 import { TradeInputForm } from "@/components/custom/TradeInputForm";
 import { SkeletonForm } from "@/components/custom/loading/TradeInputLoading";
 import { addTrade } from "@/lib/serverActions/addTradeActions";
 import { useRouter } from 'next/navigation';
+// import { useSession } from "next-auth/react";
+// import { ErrorPage } from "@/components/pages/errorPage";
 
 export default function Home() {
+  // const session = useSession()
+  // const user = session.data?.user
+  // console.log("user :", user)
+  // if(!user){
+  //   console.log("not able to get the user")
+  // }
   const router = useRouter()
   const [loading, setLoading] = useState(true);
   const [inputForm, setInputForm] = useState({
