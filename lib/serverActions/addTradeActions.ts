@@ -1,4 +1,5 @@
 "use server";
+import { auth } from "@/app/auth";
 import connectDB from "@/db/connect";
 import { Instruments, Setups, Trade } from "@/db/models";
 
@@ -112,6 +113,11 @@ export async function addTradeSetup(setup: string) {
 export async function addTrade(data: inputData) {
   // console.log(props)
   // const data = props.data
+  const session = await auth();
+  const user = session?.user;
+  if (!user) {
+    return false;
+  }
   try {
     console.log(data);
     let status = "closed";
@@ -143,7 +149,7 @@ export async function addTrade(data: inputData) {
       longShort: data.type,
       profitLoss: status === "closed" ? profitLoss : null,
       net,
-      user: "test", // Replace with actual user logic
+      user: user?.id, // Replace with actual user logic
       tradeDate: data.date, // Assuming date is in a parseable format
       instrument: data.instrument,
       setup: data.setup,
@@ -157,19 +163,131 @@ export async function addTrade(data: inputData) {
       goodBad: data.goodBadTrade, // Assuming "goodBadTrade" maps to "good" or "bad"
       tags: [], // Initialize as an empty array if no tags are provided
       createdAt: new Date(), // Assuming you want to use moment.js for current timestamp
-      exitReason : status === "closed" ? data.exitReason : ""
+      exitReason: status === "closed" ? data.exitReason : "",
     };
 
     console.log(dataForDb);
 
     await connectDB();
     const newTrade = new Trade(dataForDb);
-    console.log(newTrade)
+    console.log(newTrade);
     await newTrade.save();
     return true;
     console.log("Data inserted successfully!");
   } catch (error) {
     console.error("Error inserting data:", error);
     return false;
+  }
+}
+
+export async function editTrade({
+  data,
+  _id,
+}: {
+  data: inputData;
+  _id: string;
+}) {
+  try {
+    const session = await auth();
+    const user = session?.user;
+    if (!user) {
+      return false;
+    }
+    console.log(data);
+    let status = "closed";
+    let net = 0;
+    let profitLoss = "profit";
+
+    if (data.averageExitPrice === "" || data.averageExitPrice === null) {
+      status = "open";
+    } else {
+      const parsedEntryPrice = parseFloat(data.averageEntryPrice);
+      const parsedExitPrice = parseFloat(data.averageExitPrice);
+      const parsedNoOfLots = parseInt(data.noOfLots); // Use parseInt for integers
+      const parsedQuantityPerLot = parseFloat(data.quantityPerLot);
+
+      const quantity = parsedNoOfLots * parsedQuantityPerLot;
+
+      if (data.type === "long") {
+        net = (parsedExitPrice - parsedEntryPrice) * quantity;
+      } else if (data.type === "short") {
+        net = (parsedEntryPrice - parsedExitPrice) * quantity;
+      } else {
+        throw new Error('Invalid trade type. Must be "long" or "short".');
+      }
+      if (net <= 0) {
+        profitLoss = "loss";
+      }
+    }
+    const dataForDb = {
+      longShort: data.type,
+      profitLoss: status === "closed" ? profitLoss : null,
+      net,
+      user: user?.id, // Replace with actual user logic
+      tradeDate: data.date, // Assuming date is in a parseable format
+      instrument: data.instrument,
+      setup: data.setup,
+      stopLoss: parseFloat(data.stopLossPrice) || null, // Handle potential empty string
+      target: parseFloat(data.targetPrice) || null, // Handle potential empty string
+      entryAvg: parseFloat(data.averageEntryPrice),
+      exitAvg: parseFloat(data.averageExitPrice) || null, // Handle potential empty string
+      lots: parseInt(data.noOfLots),
+      lotSize: parseFloat(data.quantityPerLot) || null, // Handle potential empty string
+      status: status, // Replace with logic to determine status (e.g., "open", "closed")
+      goodBad: data.goodBadTrade, // Assuming "goodBadTrade" maps to "good" or "bad"
+      tags: [], // Initialize as an empty array if no tags are provided
+      createdAt: new Date(), // Assuming you want to use moment.js for current timestamp
+      exitReason: status === "closed" ? data.exitReason : "",
+    };
+
+    console.log("dataForDb :", dataForDb);
+
+    await connectDB();
+    const newTrade = await Trade.findOneAndUpdate(
+      { _id }, // Filter: Find document with the matching _id
+      dataForDb, // Update object with changes to be applied
+      { new: true } // Option: Return the updated document (optional)
+    );
+    console.log("updated trade :", newTrade);
+    return true;
+  } catch (error) {
+    console.error("Error inserting data:", error);
+    return false;
+  }
+}
+
+export async function deleteTrade({ _id }: { _id: string }) {
+  try {
+    console.log("trying to delete the trade")
+    const session = await auth(); // Assuming `auth` returns a session object
+    const user = session?.user;
+    const userId = user?.id
+
+    if (!user) {
+      return false; // Handle unauthorized deletion
+    }
+
+    await connectDB();
+
+    // Find the document to delete, filtering by both user and _id
+    const deletedTrade = await Trade.findOneAndDelete({
+      user: userId,
+      _id, // Document's ID
+    });
+
+    if (!deletedTrade) {
+      console.error(
+        `Trade with _id: ${_id} and user: ${user} not found for deletion.`
+      );
+      return false; // Handle document not found case
+    }
+
+    console.log(
+      `Trade with _id: ${_id} and user: ${user} successfully deleted.`
+    );
+    return true; // Indicate successful deletion
+  } catch (error) {
+    console.error(`Error deleting trade with _id: ${_id} `, error);
+    return false; // Handle errors
   }
 }
