@@ -20,7 +20,7 @@ interface inputData {
     exitReason: string;
   }
 
-const EditClientComp = ({data}:{data : any }) => {
+const EditClientComp = ({data, userConstants}:{data : any, userConstants : any }) => {
     const router = useRouter()
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -57,7 +57,7 @@ const EditClientComp = ({data}:{data : any }) => {
       };
     const [inputForm, setInputForm] = useState(myObject);
   return (
-    <div><TradeInputForm formData={inputForm} setFormData={setInputForm} onSubmit={onSubmit} /></div>
+    <div><TradeInputForm formData={inputForm} setFormData={setInputForm} onSubmit={onSubmit} userConstants={userConstants}/></div>
   )
 }
 

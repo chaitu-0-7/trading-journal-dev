@@ -3,6 +3,7 @@ import { Trade } from "@/db/models";
 import connectDB from "@/db/connect";
 import EditClientComp from "./editClientComp";
 import { ErrorPage } from "@/components/pages/errorPage";
+import { getUserConstants } from "@/lib/serverActions/addTradeActions";
 
 export default async function Page({ params }: { params: { id: string } }) {
   try {
@@ -25,10 +26,10 @@ export default async function Page({ params }: { params: { id: string } }) {
         <ErrorPage message={"You are trying to edit a wrong trade. Please return to Home and try again"} />
       );
     }
-    console.log(tradeToEdit)
+    const userConstants = await getUserConstants()
     return (
       <div>
-        <EditClientComp data={tradeToEdit[0]} />
+        <EditClientComp data={tradeToEdit[0]} userConstants={userConstants}/>
       </div>
     );
   } catch (error) {

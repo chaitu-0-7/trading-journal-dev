@@ -95,10 +95,12 @@ export function TradeInputForm({
   formData,
   setFormData,
   onSubmit,
+  userConstants
 }: {
   formData: inputData;
   setFormData: any;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
+  userConstants : any
 }) {
   const [instruments, setInstruments] = useState<string[]>([]);
   const [setups, setSetups] = useState<string[]>([]);
@@ -112,11 +114,11 @@ export function TradeInputForm({
   });
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = () => {
       try {
-        const response = await getUserConstants();
-        setInstruments(response?.instruments || []);
-        setSetups(response?.setups || []);
+        // const response = await getUserConstants();
+        setInstruments(userConstants?.instruments || []);
+        setSetups(userConstants?.setups || []);
       } catch (error) {
         console.error("Error fetching constants:", error);
       }
@@ -467,7 +469,8 @@ export function TradeInputForm({
               <CustomCreateSelect
                 selectName="instrument"
                 onChange={handleInstrumentChange}
-                options={instruments}
+                // work around to display the default value while editing the trade
+                options={instruments.length > userConstants.instruments.length ? instruments : userConstants.instruments}
                 defaultInput={formData.instrument}
                 onCreateFunction={(instrument: string) => {
                   instrument = instrument.toLowerCase();
@@ -485,7 +488,7 @@ export function TradeInputForm({
                 Setup for the trade
               </label>
               <CustomCreateSelect
-                options={setups}
+                options={setups.length > userConstants.setups.length ? setups : userConstants.setups}
                 selectName="setup"
                 onChange={handleSetupChange}
                 defaultInput={formData.setup}

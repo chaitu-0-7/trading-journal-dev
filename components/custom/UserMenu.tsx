@@ -1,7 +1,7 @@
 
-import { LogOut, Settings, SunIcon, MoonIcon, User2Icon } from "lucide-react";
+import { LogOut, Settings,  User2Icon } from "lucide-react";
 import { User } from "next-auth";
-import Image from "next/image";
+
 import Link from "next/link";
 import { Button } from "../ui/button";
 import {
@@ -15,6 +15,7 @@ import {
 } from "../ui/dropdown-menu";
 import { signOut } from "@/app/auth";
 import { ThemeSwitcher } from "../themes/ThemeSwitcher";
+import { redirect } from "next/navigation";
 
 interface UserButtonProps {
   user: User;
@@ -33,7 +34,7 @@ export default function UserButton({ user }: UserButtonProps) {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
-            <Link href="/settings" className="flex items-center px-4 py-2 w-full focus:outline-none hover:bg-gray-100 dark:hover:bg-gray-700">
+            <Link href="/settings" className="flex items-center px-4 py-2 w-full focus:outline-none hover:bg-gray-100 dark:hover:bg-gray-700 h-10">
               <Settings className="mr-2" />
               <span className="text-sm font-medium text-gray-700 dark:text-gray-200">Settings</span>
             </Link>
@@ -48,6 +49,7 @@ export default function UserButton({ user }: UserButtonProps) {
             action={async () => {
               "use server";
               await signOut();
+              redirect("/")
             }}
           >
             <button type="submit" className="flex w-full items-center text-sm font-medium text-gray-700 dark:text-gray-200">
