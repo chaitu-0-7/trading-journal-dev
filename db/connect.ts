@@ -3,9 +3,12 @@ import mongoose from 'mongoose';
 const connectDB = async () => {
   try {
     const uri = process.env.MONGODB_URI as string;
-    const dbName = 'trading-journal-dev';
 
-    await mongoose.connect(uri,{dbName});
+    const parts = uri.split("/", 1);
+
+    const databaseName = parts[-1];
+
+    await mongoose.connect(uri,{dbName : databaseName});
 
     console.log('MongoDB connected successfully');
   } catch (error) {

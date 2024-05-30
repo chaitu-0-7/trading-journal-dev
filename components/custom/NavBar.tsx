@@ -8,23 +8,23 @@ export default async function  NavBar() {
     const user = session?.user;
 
     return(
-      <header className="sticky top-0 bg-background">
-      <nav className="mx-auto md:px-10 px-4 py-4 flex h-14 w-full items-center justify-between gap-3 border-b border-gray-200">  
-      <Link href="/" className="font-bold">
+      <header className="z-50 top-0 sticky px-4 w-full h-16 border-b shadow-sm bg-background/80 backdrop-blur-md flex items-center gap-2 print:hidden">
+      <nav className="mx-auto md:px-10 px-4 py-4 flex h-14 w-full items-center justify-between gap-3">
+        <Link href="/" className="text-2xl font-bold">
           Journal
         </Link>
-        <div className="flex">
-          <span className="mr-5">
-          {user?<AddTradeButton/>:<></>}
-          </span>
+        <div className="flex items-center space-x-5">
+          {user && (
+            <span className="mr-5">
+              <AddTradeButton />
+            </span>
+          )}
           <span>
-          {user ? <UserButton user={user} /> : <SignInButton />}
+            {user ? <UserButton user={user} /> : <SignInButton />}
           </span>
-        
         </div>
       </nav>
     </header>
-    
     )
     
 }
