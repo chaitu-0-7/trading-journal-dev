@@ -5,6 +5,7 @@ import { TradeInputForm } from "@/components/custom/TradeInputForm";
 import { SkeletonForm } from "@/components/custom/loading/TradeInputLoading";
 import { addTrade } from "@/lib/serverActions/addTradeActions";
 import { useRouter } from 'next/navigation';
+import { toast } from "sonner";
 
 export default function TradeInputClient({ initialFormData, userConstants }: {initialFormData : any, userConstants : any}) {
   const router = useRouter();
@@ -27,23 +28,26 @@ export default function TradeInputClient({ initialFormData, userConstants }: {in
     }
   }, []);
 
-  const onSubmit = async (e : any) => {
+  const onSubmit = async (e : React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (inputForm.averageExitPrice.trim() === "") {
-      console.log('Trade Open');
-    }
+    // await new Promise((resolve) => setTimeout(resolve, 120000));
 
     try {
       const result = await addTrade(inputForm);
       if (!result) {
         alert("Failed to add the trade, please try again.");
+        return false
       } else {
         localStorage.setItem("old-draft", JSON.stringify(inputForm));
         localStorage.removeItem("draft");
+        toast.success("Trade added succesfully")
         router.push("/");
+        return true
       }
     } catch (error) {
+      toast.error("Trade has not been created")
       console.error('Error adding trade:', error);
+      return false
     }
   };
 

@@ -3,6 +3,7 @@ import { TradeInputForm } from "@/components/custom/TradeInputForm";
 import { editTrade } from "@/lib/serverActions/addTradeActions";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 
 interface inputData {
     type: string;
@@ -28,15 +29,21 @@ const EditClientComp = ({data, userConstants}:{data : any, userConstants : any }
           const result = await editTrade({data: inputForm, _id: data._id}); // Assuming addTrade is an async function
           if(!result){
             alert("Failed to add the trade please try again.")
+            toast.error("Failed to update the trade")
+            return false
           }
           else{
             // Success: Redirect using Next.js router
           localStorage.setItem("old-draft", JSON.stringify(inputForm));
           localStorage.removeItem("draft");
+          toast.success("Updated the trade")
           router.push("/")
+          return true
           }
         } catch (error) {
           console.error('Error adding trade:', error);
+          toast.error("Failed to update the trade")
+          return false
           // Handle errors appropriately (e.g., display an error message)
         }
       };

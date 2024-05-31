@@ -2,6 +2,7 @@
 import { auth } from "@/app/auth";
 import connectDB from "@/db/connect";
 import { Instruments, Setups, Trade } from "@/db/models";
+import { roundToNearest } from "../commonFunctions";
 
 interface inputData {
   type: string;
@@ -124,7 +125,7 @@ export async function addTrade(data: inputData) {
     let net = 0;
     let profitLoss = "profit";
 
-    if (data.averageExitPrice == "") {
+    if (data.averageExitPrice == "" || data.averageExitPrice === null) {
       status = "open";
     } else {
       const parsedEntryPrice = parseFloat(data.averageEntryPrice);
@@ -145,20 +146,40 @@ export async function addTrade(data: inputData) {
         profitLoss = "loss";
       }
     }
+    // const dataForDb = {
+    //   longShort: data.type,
+    //   profitLoss: status === "closed" ? profitLoss : null,
+    //   net ,
+    //   user: user?.id, // Replace with actual user logic
+    //   tradeDate: data.date, // Assuming date is in a parseable format
+    //   instrument: data.instrument,
+    //   setup: data.setup,
+    //   stopLoss: parseFloat(data.stopLossPrice) || null, // Handle potential empty string
+    //   target: parseFloat(data.targetPrice) || null, // Handle potential empty string
+    //   entryAvg: parseFloat(data.averageEntryPrice),
+    //   exitAvg: parseFloat(data.averageExitPrice) || null, // Handle potential empty string
+    //   lots: parseInt(data.noOfLots),
+    //   lotSize: parseFloat(data.quantityPerLot) || null, // Handle potential empty string
+    //   status: status, // Replace with logic to determine status (e.g., "open", "closed")
+    //   goodBad: data.goodBadTrade, // Assuming "goodBadTrade" maps to "good" or "bad"
+    //   tags: [], // Initialize as an empty array if no tags are provided
+    //   createdAt: new Date(), // Assuming you want to use moment.js for current timestamp
+    //   exitReason: status === "closed" ? data.exitReason : "",
+    // };
     const dataForDb = {
       longShort: data.type,
       profitLoss: status === "closed" ? profitLoss : null,
-      net,
+      net: roundToNearest(net, 2), // Round net to nearest 2 digits
       user: user?.id, // Replace with actual user logic
       tradeDate: data.date, // Assuming date is in a parseable format
       instrument: data.instrument,
       setup: data.setup,
-      stopLoss: parseFloat(data.stopLossPrice) || null, // Handle potential empty string
-      target: parseFloat(data.targetPrice) || null, // Handle potential empty string
-      entryAvg: parseFloat(data.averageEntryPrice),
-      exitAvg: parseFloat(data.averageExitPrice) || null, // Handle potential empty string
+      stopLoss: roundToNearest(parseFloat(data.stopLossPrice) || null, 3),
+      target: roundToNearest(parseFloat(data.targetPrice) || null, 3),
+      entryAvg: roundToNearest(parseFloat(data.averageEntryPrice) || null, 3),
+      exitAvg: roundToNearest(parseFloat(data.averageExitPrice) || null, 3),
       lots: parseInt(data.noOfLots),
-      lotSize: parseFloat(data.quantityPerLot) || null, // Handle potential empty string
+      lotSize: parseFloat(data.quantityPerLot),
       status: status, // Replace with logic to determine status (e.g., "open", "closed")
       goodBad: data.goodBadTrade, // Assuming "goodBadTrade" maps to "good" or "bad"
       tags: [], // Initialize as an empty array if no tags are provided
@@ -219,20 +240,41 @@ export async function editTrade({
         profitLoss = "loss";
       }
     }
+    // const dataForDb = {
+    //   longShort: data.type,
+    //   profitLoss: status === "closed" ? profitLoss : null,
+    //   net,
+    //   user: user?.id, // Replace with actual user logic
+    //   tradeDate: data.date, // Assuming date is in a parseable format
+    //   instrument: data.instrument,
+    //   setup: data.setup,
+    //   stopLoss: parseFloat(data.stopLossPrice) || null, // Handle potential empty string
+    //   target: parseFloat(data.targetPrice) || null, // Handle potential empty string
+    //   entryAvg: parseFloat(data.averageEntryPrice),
+    //   exitAvg: parseFloat(data.averageExitPrice) || null, // Handle potential empty string
+    //   lots: parseInt(data.noOfLots),
+    //   lotSize: parseFloat(data.quantityPerLot) || null, // Handle potential empty string
+    //   status: status, // Replace with logic to determine status (e.g., "open", "closed")
+    //   goodBad: data.goodBadTrade, // Assuming "goodBadTrade" maps to "good" or "bad"
+    //   tags: [], // Initialize as an empty array if no tags are provided
+    //   createdAt: new Date(), // Assuming you want to use moment.js for current timestamp
+    //   exitReason: status === "closed" ? data.exitReason : "",
+    // };
+
     const dataForDb = {
       longShort: data.type,
       profitLoss: status === "closed" ? profitLoss : null,
-      net,
+      net: roundToNearest(net, 2), // Round net to nearest 2 digits
       user: user?.id, // Replace with actual user logic
       tradeDate: data.date, // Assuming date is in a parseable format
       instrument: data.instrument,
       setup: data.setup,
-      stopLoss: parseFloat(data.stopLossPrice) || null, // Handle potential empty string
-      target: parseFloat(data.targetPrice) || null, // Handle potential empty string
-      entryAvg: parseFloat(data.averageEntryPrice),
-      exitAvg: parseFloat(data.averageExitPrice) || null, // Handle potential empty string
+      stopLoss: roundToNearest(parseFloat(data.stopLossPrice) || null, 3),
+      target: roundToNearest(parseFloat(data.targetPrice) || null, 3),
+      entryAvg: roundToNearest(parseFloat(data.averageEntryPrice) || null, 3),
+      exitAvg: roundToNearest(parseFloat(data.averageExitPrice) || null, 3),
       lots: parseInt(data.noOfLots),
-      lotSize: parseFloat(data.quantityPerLot) || null, // Handle potential empty string
+      lotSize: parseFloat(data.quantityPerLot),
       status: status, // Replace with logic to determine status (e.g., "open", "closed")
       goodBad: data.goodBadTrade, // Assuming "goodBadTrade" maps to "good" or "bad"
       tags: [], // Initialize as an empty array if no tags are provided

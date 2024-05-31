@@ -4,7 +4,7 @@
 
 import React, { useState, useEffect } from "react";
 import { format, set } from "date-fns";
-import { Calendar as CalendarIcon, CodeSquare } from "lucide-react";
+import { Calendar as CalendarIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -18,12 +18,12 @@ import { tradeInputConstants } from "@/lib/constants";
 import {
   addInstrument,
   addTradeSetup,
-  getUserConstants,
 } from "@/lib/serverActions/addTradeActions";
 import CustomCreateSelect from "@/components/custom/CustomCreatableSelect";
 import { Input } from "@/components/ui/input";
 import Select from "react-select";
 import PreviewComponent from "@/components/custom/PreviewComponent";
+import Spinner from "./loading/Spinner";
 
 interface inputData {
   type: string;
@@ -99,7 +99,7 @@ export function TradeInputForm({
 }: {
   formData: inputData;
   setFormData: any;
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<boolean>;
   userConstants : any
 }) {
   const [instruments, setInstruments] = useState<string[]>([]);
@@ -287,17 +287,21 @@ export function TradeInputForm({
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     validateInput();
-    if ((formData.averageExitPrice === null || formData.averageExitPrice.trim() === "")) {
+    if ((formData.averageExitPrice === null || formData.averageExitPrice === "")) {
       setFormData((prevData: any) => ({
         ...prevData,
         setup: "open",
       }));
     }
     setSubmitted(true);
-    onSubmit(e);
+    const res = onSubmit(e);
+    console.log("Result from form is :", res)
+    if(!res){
+      setSubmitted(false)
+    }
   };
 
   const renderTradeInput = (input: TradeInput) => {
@@ -372,9 +376,10 @@ export function TradeInputForm({
         <fieldset className="space-y-4">
           <div className="trade-details flex items-center justify-between">
             <legend className="text-xl font-bold mb-2">Trade Details</legend>
-            <Button className="h-6 px-2 text-xs bg-red-500 hover:bg-red-600 focus:outline-none rounded-md"
-            type="button"
-            onClick={resetForm}
+            <Button
+              className="h-6 px-2 text-xs bg-red-500 hover:bg-red-600 focus:outline-none rounded-md"
+              type="button"
+              onClick={resetForm}
             >
               Clear
             </Button>
@@ -401,8 +406,6 @@ export function TradeInputForm({
                 required
               />
             </div>
-
-            
 
             <div className="w-full md:w-1/2">
               <label className="text-sm font-medium mb-1">
@@ -470,7 +473,11 @@ export function TradeInputForm({
                 selectName="instrument"
                 onChange={handleInstrumentChange}
                 // work around to display the default value while editing the trade
-                options={instruments.length > userConstants.instruments.length ? instruments : userConstants.instruments}
+                options={
+                  instruments.length > userConstants.instruments.length
+                    ? instruments
+                    : userConstants.instruments
+                }
                 defaultInput={formData.instrument}
                 onCreateFunction={(instrument: string) => {
                   instrument = instrument.toLowerCase();
@@ -488,7 +495,11 @@ export function TradeInputForm({
                 Setup for the trade
               </label>
               <CustomCreateSelect
-                options={setups.length > userConstants.setups.length ? setups : userConstants.setups}
+                options={
+                  setups.length > userConstants.setups.length
+                    ? setups
+                    : userConstants.setups
+                }
                 selectName="setup"
                 onChange={handleSetupChange}
                 defaultInput={formData.setup}
@@ -517,10 +528,17 @@ export function TradeInputForm({
           </p>
           <Button
             type="submit"
-            className="w-24 mx-auto mt-5 flex justify-center"
-            disabled={!previewOpen}
+            className="w-30 mx-auto mt-5 flex justify-center"
+            disabled={!previewOpen || submitted}
           >
-            Submit
+            {submitted ? (
+              <>
+                <span>loading </span>
+                <Spinner />
+              </>
+            ) : (
+              <span>Submit</span>
+            )}
           </Button>
         </fieldset>
       </form>

@@ -116,7 +116,7 @@ export const openTradeColumns: ColumnDef<openTrade>[] = [
     ),
     cell: ({ row }) => {
       const instrument: string = row.getValue("instrument");
-      return <div className="w-24 h-12 flex justify-center items-center">{capitalizeWords(instrument)}</div>;
+      return <div className="w-24 max-h-12 flex justify-center items-center">{capitalizeWords(instrument)}</div>;
     },
   },
   {
@@ -126,7 +126,7 @@ export const openTradeColumns: ColumnDef<openTrade>[] = [
     ),
     cell: ({ row }) => {
       const setup: string = row.getValue("setup");
-      return <div className="w-24 h-12 flex justify-center items-center">{capitalizeWords(setup)}</div>;
+      return <div className="w-24 max-h-12 flex justify-center items-center">{capitalizeWords(setup)}</div>;
     },
   },
   {
@@ -139,7 +139,7 @@ export const openTradeColumns: ColumnDef<openTrade>[] = [
 
       const formattedDate = format(dateObj, "dd-MM-yyyy ");
 
-      return <div className="w-24 h-12 flex justify-center items-center">{formattedDate}</div>;
+      return <div className="w-24 max-h-12 flex justify-center items-center">{formattedDate}</div>;
     },
   },
   {
@@ -148,7 +148,7 @@ export const openTradeColumns: ColumnDef<openTrade>[] = [
       <DataTableColumnHeader column={column} title="Risk/Reward" />
     ),
     cell: ({ row }) => {
-      return <div className="w-24 h-12 flex justify-center items-center">{calculateRiskAndReward(row)}</div>;
+      return <div className="w-24 max-h-12 flex justify-center items-center">{calculateRiskAndReward(row)}</div>;
     },
   },
   {
@@ -158,7 +158,7 @@ export const openTradeColumns: ColumnDef<openTrade>[] = [
     ),
     cell: ({ row }) => {
       const longShort: string = row.getValue("longShort");
-      return <div className="w-24 h-12 flex justify-center items-center">{capitalizeWords(longShort)}</div>;
+      return <div className="w-24 max-h-12 flex justify-center items-center">{capitalizeWords(longShort)}</div>;
     },
   },
   {
@@ -173,7 +173,7 @@ export const openTradeColumns: ColumnDef<openTrade>[] = [
       <DataTableColumnHeader column={column} title="Good or Bad Trade" />
     ),
     cell: ({ row }) => {
-      return <div className="w-24 h-12 flex justify-center items-center">{capitalizeWords(row.getValue("goodBad"))}</div>;
+      return <div className="w-24 max-h-12 flex justify-center items-center">{capitalizeWords(row.getValue("goodBad"))}</div>;
     },
   },
   {
@@ -211,7 +211,7 @@ export const closedTradeColumns: ColumnDef<closedTrade>[] =  [
     ),
     cell: ({ row }) => {
       const instrument: string = row.getValue("instrument");
-      return <div className="w-24 h-12 flex justify-center items-center">{capitalizeWords(instrument)}</div>;
+      return <div className="w-24 max-h-12 flex justify-center items-center">{capitalizeWords(instrument)}</div>;
     },
   },
   {
@@ -221,7 +221,7 @@ export const closedTradeColumns: ColumnDef<closedTrade>[] =  [
     ),
     cell: ({ row }) => {
       const setup: string = row.getValue("setup");
-      return <div className="w-24 h-12 flex justify-center items-center">{capitalizeWords(setup)}</div>;
+      return <div className="w-24 max-h-12 flex justify-center items-center">{capitalizeWords(setup)}</div>;
     },
   },
   {
@@ -234,7 +234,7 @@ export const closedTradeColumns: ColumnDef<closedTrade>[] =  [
 
       const formattedDate = format(dateObj, "dd-MM-yyyy ");
 
-      return <div className="w-24 h-12 flex justify-center items-center">{formattedDate}</div>;
+      return <div className="w-24 max-h-12 flex justify-center items-center">{formattedDate}</div>;
     },
   },
   {
@@ -243,7 +243,7 @@ export const closedTradeColumns: ColumnDef<closedTrade>[] =  [
       <DataTableColumnHeader column={column} title="Risk/Reward" />
     ),
     cell: ({ row }) => {
-      return <div className="w-24 h-12 flex justify-center items-center">{calculateRiskAndReward(row)}</div>;
+      return <div className="w-24 max-h-12 flex justify-center items-center">{calculateRiskAndReward(row)}</div>;
     },
   },
   {
@@ -253,7 +253,7 @@ export const closedTradeColumns: ColumnDef<closedTrade>[] =  [
     ),
     cell: ({ row }) => {
       const longShort: string = row.getValue("longShort");
-      return <div className="w-24 h-12 flex justify-center items-center">{capitalizeWords(longShort)}</div>;
+      return <div className="w-24 max-h-12 flex justify-center items-center">{capitalizeWords(longShort)}</div>;
     },
   },
   {
@@ -268,7 +268,7 @@ export const closedTradeColumns: ColumnDef<closedTrade>[] =  [
       <DataTableColumnHeader column={column} title="Good or Bad Trade" />
     ),
     cell: ({ row }) => {
-      return <div className="w-24 h-12 flex justify-center items-center">{capitalizeWords(row.getValue("goodBad"))}</div>;
+      return <div className="w-24 max-h-12 flex justify-center items-center">{capitalizeWords(row.getValue("goodBad"))}</div>;
     },
   },
   {
@@ -290,7 +290,7 @@ export const closedTradeColumns: ColumnDef<closedTrade>[] =  [
 
     return (
       <div
-        className={`w-24 h-12 rounded-md shadow-md flex justify-center items-center ${backgroundClass}`}
+        className={`w-24 max-h-12 rounded-md shadow-md flex justify-center items-center ${backgroundClass}`}
       >
         {netValue}
       </div>
