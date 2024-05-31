@@ -4,6 +4,8 @@ import "./globals.css";
 import Providers from "../components/themes/providers";
 import { SessionProvider } from "next-auth/react"
 import NavBar from "@/components/custom/NavBar";
+import { Toaster } from "@/components/ui/sonner"
+import { TopProgressBarProvider } from "@/components/custom/loading/ProgressBarProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -22,7 +24,10 @@ export default function RootLayout({
         <SessionProvider>
         <Providers>
           <NavBar/>
+          <TopProgressBarProvider>
           {children}
+          </TopProgressBarProvider>
+          <Toaster closeButton/>
         </Providers>
         </SessionProvider>
       </body>
